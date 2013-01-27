@@ -1,0 +1,13 @@
+dashboard:
+  optionsmanagment:
+    label: Options
+    uri:
+    class: list-alt
+    order: 99
+    pages:
+      edit:
+        label:Edit Options
+        module:options
+        controller:management
+        action:index
+        route:default

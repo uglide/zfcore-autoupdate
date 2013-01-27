@@ -1,0 +1,55 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>.
+ * history-tab.phtml
+ * Date: 08.11.12
+ */
+?>
+<h3>Last <?php echo Deploy_Model_UpdateQueue_Table::DEFAULT_LIMIT ?> updates</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>State</th>
+            <th>Verified</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+
+    if (!empty($this->history))
+        foreach ($this->history as $update) :
+            ?>
+        <tr>
+            <td><?=$update->user?></td>
+            <td><?=$update->date?></td>
+            <td><?=$update->startRevision?></td>
+            <td><?=$update->targetRevision?></td>
+            <td><span class="label"><?=$update->state?></span></td>
+            <td>
+                <?php if ($update->verifiedByUser) : ?>
+                <span class="label label-success"><?=$update->verifiedByUser?></span>
+                <?php endif; ?>
+            </td>
+            <td>
+                <a href="#log<?=$update->id?>" role="button" class="btn" data-toggle="modal">Show log</a>
+                <div id="log<?=$update->id?>" class="modal hide fade" style="width: 1000px; left: 37%;" tabindex="-1" role="dialog">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel">Update log</h3>
+                    </div>
+                    <div class="modal-body" style="width: 950px;">
+                        <pre>
+                            <?=$update->log?>
+                        </pre>
+                    </div>
+                </div>
+            </td>
+        </tr>
+ <?php endforeach; ?>
+    </tbody>
+</table>

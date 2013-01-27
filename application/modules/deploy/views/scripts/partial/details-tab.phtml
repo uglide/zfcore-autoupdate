@@ -1,0 +1,173 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>.
+ * details-tab.phtml
+ * Date: 08.11.12
+ */
+?>
+
+<?php if ($this->states['isEnvironmentReady']) : ?>
+<div class="alert alert-success">
+    <?php
+    $version = $this->env->getVersion(false);
+    $tags = $this->env->getRepo()->getTags();
+
+    if ($version) {
+
+        $versionLabel = ($version && array_key_exists($version->revision, $tags))
+            ? $tags[$version->revision] : $version->revision;
+        $versionID = $version->id;
+    } else {
+        $versionLabel = 'no versions found';
+        $versionID = '';
+    }
+    ?>
+    Ready for update.
+    <span class="version">Last version - <?php echo $versionLabel; ?></span>
+</div>
+<?php else : ?>
+<div class="alert alert-error">
+    Not ready. More Info on Details tab.
+</div>
+<?php endif; ?>
+
+<table class="table table-bordered">
+    <tbody>
+    <tr>
+        <td>Path:</td>
+        <td>
+            <?php
+            echo $this->env->path;
+
+            if ($this->states['validPath']) {
+                echo '<i class="icon-ok"></i>';
+            } else {
+                echo '<i class="icon-ban-circle"></i>';
+            }
+
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Pre Process Script:</td>
+        <td>
+            <?php
+            echo $this->env->preProcessScript;
+
+            if ($this->states['validPreProcessScript']) {
+                echo '<i class="icon-ok"></i>';
+            } else {
+                echo '<i class="icon-ban-circle"></i>';
+            }
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Process Script:</td>
+        <td>
+            <?php
+            echo $this->env->processScript;
+
+            if ($this->states['validProcessScript']) {
+                echo '<i class="icon-ok"></i>';
+            } else {
+                echo '<i class="icon-ban-circle"></i>';
+            }
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Post Process Script:</td>
+        <td>
+            <?php
+            echo $this->env->postProcessScript;
+
+            if ($this->states['validPostProcessScript']) {
+                echo '<i class="icon-ok"></i>';
+            } else {
+                echo '<i class="icon-ban-circle"></i>';
+            }
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Mercurial Repo:</td>
+        <td>
+            <?php
+            if ($this->states['validRepo']) :
+                echo '<span class="label label-success">Repository exists</span>';
+            else :
+                echo '<span class="label label-important">Repository in specified path not found</span>';
+            endif;
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Central repo:</td>
+        <td>
+            <?php
+            if ($this->states['validPath'] && $this->states['validCentralRepo']) :
+                echo '<span class="label label-success">Online</span>';
+            else :
+                echo '<span class="label label-important">Offline/Error</span>';
+            endif;
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Last auto-updated version:</td>
+        <td>
+            <?php
+            if (!$version = $this->env->getVersion(false)) :
+                echo '<span class="label label-important">Not Loaded</span>';
+            else :
+                echo '<span class="label label-info">' . $version->revision . '</span>';
+            endif;
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Current version in env path:</td>
+        <td>
+            <?php
+            if ($this->states['validPath'] && $realRev = $this->env->getRealVersionInPath()) :
+                echo '<span class="label label-info">' . $realRev . '</span>';
+            else :
+                echo '<span class="label label-important">Fix environment path first</span>';
+            endif;
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Migrations:</td>
+        <td>
+            <?php
+            if ($this->states['validPath'] && $this->states['validMigrations']) :
+                echo '<span class="label label-success">No conflicts</span>';
+            else :
+                echo '<span class="label label-important">Detected conflicts</span>';
+            endif;
+            ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Run Jenkins Job After Update:</td>
+        <td>
+            <?php
+                if ($this->env->isJenkinsJobAttached()) {
+                    echo '<span class="label label-success">' . $this->env->jenkinsJobName . '</span>';
+                } else {
+                    echo '<span class="label">No</span>';
+                }
+            ?>
+        </td>
+    </tr>
+
+
+    </tbody>
+</table>

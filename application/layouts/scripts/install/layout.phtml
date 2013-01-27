@@ -1,0 +1,25 @@
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$class = array();
+$class[] = 'm-' . $request->getModuleName();
+$class[] = 'c-' . $request->getControllerName();
+$class[] = 'a-' . $request->getActionName();
+
+?>
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+    <?php echo $this->render('install/partial/head.phtml') ?>
+    <body class="<?php echo implode(' ', $class) ?>">
+    <?php echo $this->render('install/partial/messages.phtml') ?>
+    <?php echo $this->render('install/partial/menu.phtml') ?>
+    <div class="container well">
+        <?php echo $this->render('install/partial/breadcrumbs.phtml') ?>
+        <?php echo $this->layout()->content ?>
+    </div>
+    <hr />
+    <footer class="container">
+        <p align="center">&copy; <?php echo gmdate('Y')?> NIX Solutions Ltd</p>
+    </footer>
+    </body>
+</html>

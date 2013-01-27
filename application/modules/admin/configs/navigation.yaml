@@ -1,0 +1,14 @@
+dashboard:
+  statistic:
+    label: Statistics
+    uri:
+    class: signal
+    order: 100
+default:
+  admin:
+    label: Admin panel
+    module: admin
+    controller: index
+    action: index
+    route: default
+    order: 99

@@ -1,0 +1,49 @@
+dashboard:
+  usermanagment:
+    label: Users
+    uri:
+    class: user
+    order: 2
+    pages:
+      create:
+        label: Add New User
+        module: users
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: All Users
+        module: users
+        controller: management
+        action: index
+        route: default
+  statistic:
+    pages:
+      users:
+        label: Users
+        module: users
+        controller: management
+        action: stats
+        route: default
+default:
+  userlogout:
+    label: Logout
+    route: logout
+    module: users
+    controller: login
+    action: logout
+    order: 100
+  profile:
+    label: Profile
+    route: myprofile
+    module: users
+    controller: profile
+    action: index
+    order: 50
+  userlogin:
+    label: Login
+    route: login
+    module: users
+    controller: login
+    action: index
+    order: 100

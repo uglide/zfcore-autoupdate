@@ -1,2 +1,2 @@
-# Релиз в процессе подготовки #
-ZFCore Auto Update будет доступен с 31 января 2013 года
+# ZFCore Auto Update #
+Appication for Continious Delivery

@@ -1,0 +1,15 @@
+roles:
+  - guest:
+  - user:
+    - guest
+  - developer:
+    - user
+  - verifier:
+    - user
+  - admin:
+    - developer
+  - system:
+resources:
+  balalayka:
+    allow: admin
+    deny: user

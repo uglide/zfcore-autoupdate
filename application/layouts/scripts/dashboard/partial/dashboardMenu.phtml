@@ -1,0 +1,50 @@
+<ul class="nav nav-list">
+<?php
+    foreach ($this->container as $pages) {
+        // loop next level
+        foreach ($pages as $page) {
+            /* @var Zend_Navigation_Page $page */
+            // check if it is active (not recursive)
+            $liClass = array();
+
+            $cls = $page->getClass();
+
+            if ($page->isActive(false)) {
+                $liClass[] = 'active';
+            }
+
+            if (!$page->getHref()) {
+                $liClass[] = 'nav-header';
+            }
+
+            if ($page->getLabel() !== null && $page->isVisible(true)) {
+                echo '<li class="' . join(' ', $liClass) . '">';
+                echo ($cls?"<i class='icon-$cls'></i>&nbsp;":"");
+                echo $this->menu()->htmlify($page);
+                echo '</li>', PHP_EOL;
+            }
+
+            // check if it is active (recursive)
+            $isActivePart = $page->isActive(true);
+
+            if ($subPages = $page->getPages()) {
+                foreach ($subPages as $subPage) {
+                    if ($subPage->isActive()) {
+                        $liClass = 'active';
+                    } elseif (!$isActivePart) {
+                        $liClass = 'hide';
+                    } else {
+                        $liClass = '';
+                    }
+                    //$liClass = $page->isActive() ? 'active' : '';
+                    if ($subPage->getLabel() !== null && $subPage->isVisible(true)) {
+                        echo '<li class="' . $liClass . '">' . $this->menu()->htmlify($subPage);
+                        echo '</li>', PHP_EOL;
+                    }
+                }
+            }
+
+        }
+    }
+?>
+</ul>

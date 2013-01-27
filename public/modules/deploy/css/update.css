@@ -1,0 +1,90 @@
+
+ul.environments-list {
+    margin: 0;
+    padding: 0 5px;
+    width: 100%;
+    color: #333333;
+}
+
+ul li.environment {
+    display: block;
+    margin: 5px 0;
+    background-color: #FAFAFA;
+    background-image: linear-gradient(to bottom, #FFFFFF, #F2F2F2);
+    background-repeat: repeat-x;
+    border: 1px solid #c4c4c4;
+    border-radius: 4px 4px 4px 4px;
+    min-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-shadow:  0 3px 5px rgba(0, 0, 0, 0.10);
+}
+
+ul li.group-title {
+    padding: 5px 0;
+    color: #333333;
+    display: block;
+    font-size: 21px;
+    line-height: 40px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+ul li.environment .name {
+    display: block;
+    font-size: 18px;
+    line-height: 30px;
+    margin: 5px 0;
+    text-transform: lowercase;
+}
+
+ul li.environment .current-version {
+    margin-left: 50px;
+}
+.version {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 150px;
+}
+
+ul.environments-list + ul.environments-list {
+    margin-top: 50px;
+}
+
+
+ul.test {
+    background-color: rgba(255, 163, 151, 0.85);
+    padding: 10px;
+    border: 1px solid rgb(220, 138, 129);
+}
+
+ul.stage {
+    background-color: rgb(255, 210, 46);
+    padding: 10px;
+}
+
+ul.live {
+    background-color: rgba(14, 126, 8, 0.64);
+    padding: 10px;
+}
+
+.message-locked {
+    display: none;
+}
+
+.no-environments {
+    margin: 5px 0 5px 15px;
+}
+
+
+.last-update {
+    font-size: 12px;
+    margin: 0 0 5px;
+}
+
+.last-update .error {
+    color: #ff0511;
+}
+.last-update .processed {
+    color: #008200;
+}

@@ -1,0 +1,28 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li>
+                        <a href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'index', 'action' => 'index'), null, true) ?>"
+                               title="Dashboard"><i class="icon-home icon-white"></i>&nbsp;Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/"
+                               title="View the Site" target="_blank"><i class="icon-share-alt icon-white"></i>&nbsp;View the Site</a>
+                    </li>
+
+                </ul>
+                <ul class="nav pull-right">
+                    <li><a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'logout'), 'logout') ?>" title="Sign Out">
+                        <i class="icon-off icon-white"></i>&nbsp;Sign Out</a></li>
+                    <li><a href="<?=$this->url(array('module'=>'admin', 'controller'=>'about', 'action' => 'index'), null, true)?>">
+                        <i class="icon-info-sign icon-white"></i></a></li>
+                </ul>
+                <div id="loading"></div>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+

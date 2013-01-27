@@ -1,0 +1,109 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>
+ * Date: 22.12.12
+ * Time: 19:25
+ */
+?>
+
+<?php
+if (!empty($this->environments)) :
+
+    foreach ($this->environments as $env) :
+        /**
+         * @var Deploy_Model_Environment $env
+         */
+        $updateTask = $env->getVersionWaitingForUpdate();
+        $href = $this->url(
+            array(
+                'module'     => 'deploy',
+                'controller' => 'environments',
+                'action'     => 'view',
+                'id'         => $env->id
+            )
+        );
+
+        ?>
+    <li class="environment <?php if ($env->isReady() && !$updateTask) echo 'ready'; elseif ($updateTask) echo 'waiting-update';
+    else echo 'error'; ?>">
+        <?php if ($updateTask) : ?>
+            <form class="form-inline" data-id="<?php echo $env->id ?>">
+                <a class="name" href="<?php echo $href; ?>"><?php echo $env->name ?></a>
+                <div class="progress progress-striped">
+                    <div class="bar" style="width: 100%;">
+                        <span class="message message-waiting">
+                            Environment is waiting for update to
+                        </span>
+                        <span class="message message-locked">
+                            Environment is updating to
+                        </span>
+                        <span id="targetVersionLabel">
+                            <?php echo $updateTask['targetRevision'] ?>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        <?php elseif ($env->isReady()) :
+                $isVerified = $env->isCurrentVersionVerified();
+                $version = $env->getVersion();
+                $revision = ($version)? $version->revision : 'not loaded';
+        ?>
+            <form class="form-inline" data-id="<?php echo $env->id ?>">
+                <a class="name" href="<?php echo $href; ?>"><?php echo $env->name ?></a>
+                <div class="last-update">Last update:
+                    <span class="<?php echo $env->lastUpdateState?>">
+                        <?php echo $env->lastUpdateState?>
+                    </span>
+                </div>
+                <label>New version</label>
+                <?php if ($env->isLive()) : ?>
+                    <?php
+                        if (empty($this->versions)) : ?>
+                            <input class="target-version" type="text" placeholder="Verified versions not found" disabled="disabled">
+                            <a class="btn btn-primary disabled">Update!</a>
+                    <?php
+                        else :
+                            echo $this->formSelect(
+                                'target-version' . $env->id, '',
+                                array('class' => 'target-version'),
+                                $this->beatifyRevisionsList(
+                                    $this->versions,
+                                    array() //todo: load tags
+                                )
+                            );
+                    ?>
+                            <a class="btn btn-primary update-btn">Update!</a>
+                    <?php
+                        endif;
+                    ?>
+                <?php else : ?>
+                    <input class="target-version" type="text" placeholder="Enter new version">
+                    <a class="btn btn-primary update-btn">Update!</a>
+                <?php endif; ?>
+
+                <label class="current-version">Current version</label>
+                <span class="version"><?php echo $revision ?></span>
+                <?php if ($isVerified && $this->user->isVerifier()): ?>
+                    <a class="btn btn-success disabled">Version verified</a>
+                <?php elseif ($version && $this->user->isVerifier()) : ?>
+                    <a class="btn btn-success verify-btn" data-version-id="<?php echo $version->id; ?>">
+                        Verify current version
+                    </a>
+                <?php endif; ?>
+            </form>
+        <?php else: ?>
+            <form class="form-inline">
+                <a class="name" href="<?php echo $href; ?>"><?php echo $env->name ?></a>
+                <span class="label label-warning">Environment not ready.</span>
+                <a href="<?php echo $href; ?>"> More info</a>
+            </form>
+        <?php endif; ?>
+    </li>
+<?php
+    endforeach;
+else :
+    ?>
+<li class="no-environments">No environments</li>
+<?php
+endif;
+?>

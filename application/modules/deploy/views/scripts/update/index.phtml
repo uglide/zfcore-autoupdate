@@ -1,0 +1,69 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>.
+ * index.phtml
+ * Date: 21.12.12
+ */
+
+$this->stylesheet()->controller();
+$this->javascript()->action();
+
+?>
+
+<script type="text/javascript">
+    var config = {
+        'url' : {
+            'addUpdateTask' : "<?php echo $this->url(array('controller' => 'environments', 'action' => 'add-update-task')) ?>",
+            'getEnvironmentState' : "<?php echo $this->url(array('controller' => 'environments', 'action' => 'get-environment-state')) ?>",
+            'verify': "<?php echo $this->url(array('controller' => 'environments', 'action' => 'verify')) ?>"
+        },
+        'checkEnvStateInterval': 5000
+    };
+</script>
+
+<h1>Update Environments</h1>
+
+    <ul class="environments-list test">
+        <li class="group-title">Test environments</li>
+        <?php
+            echo $this->partial(
+                'partial/environments-list.phtml',
+                array(
+                    'environments' =>
+                        (isset($this->environments[Deploy_Model_Environment::TYPE_TEST]))?
+                            $this->environments[Deploy_Model_Environment::TYPE_TEST] : array(),
+                    'user' => $this->user
+                )
+            );
+        ?>
+    </ul>
+    <ul class="environments-list stage">
+        <li class="group-title">Stage environments</li>
+        <?php
+            echo $this->partial(
+                'partial/environments-list.phtml',
+                array(
+                    'environments' =>
+                        (isset($this->environments[Deploy_Model_Environment::TYPE_STAGE]))?
+                            $this->environments[Deploy_Model_Environment::TYPE_STAGE] : array(),
+                    'user' => $this->user
+                )
+            );
+        ?>
+    </ul>
+    <ul class="environments-list live">
+        <li class="group-title">Live environments</li>
+        <?php
+            echo $this->partial(
+                'partial/environments-list.phtml',
+                array(
+                    'environments' =>
+                        (isset($this->environments[Deploy_Model_Environment::TYPE_LIVE]))?
+                            $this->environments[Deploy_Model_Environment::TYPE_LIVE] : array(),
+                    'versions' => $this->verifiedVersions[Deploy_Model_Environment::TYPE_LIVE],
+                    'user' => $this->user
+                )
+            );
+        ?>
+    </ul>
+

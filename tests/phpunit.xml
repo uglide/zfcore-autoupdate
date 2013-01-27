@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit bootstrap="./application/bootstrap.php" 
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="false"
+    syntaxCheck="true"
+    processIsolation="true">
+        
+    <testsuite name="Main Test Suite">
+        <!--<directory>./</directory>-->
+        <file>TestSuite.php</file>
+    </testsuite>
+    <listeners>
+      <listener class="TestListener" file="./application/TestListener.php"/>
+    </listeners>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../application</directory>
+            <directory suffix=".php">../library/Core</directory>
+            <exclude>
+                <directory suffix=".phtml">../application</directory>
+                <directory prefix="migrations">../application</directory>
+                <directory prefix="Bootstrap">../application</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    
+    <logging>
+      <!--<log type="coverage-html" target="./reports/coverage" charset="UTF-8" yui="true" highlight="true" lowUpperBound="35" highLowerBound="70"/>-->
+      <!--<log type="coverage-xml" target="./reports/coverage/clover.xml"/>-->
+      <!--<log type="junit" target="./reports/phpunit.xml" logIncompleteSkipped="false"/>-->
+    </logging>
+</phpunit>

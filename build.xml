@@ -1,0 +1,236 @@
+<project name="ZFCore" default="build">
+    
+    <property name="appDir"   value="${basedir}/application" />
+    <property name="testsDir" value="${basedir}/tests" />
+    <property name="coreDir"  value="${basedir}/library/Core" />
+    <property name="buildDir" value="${basedir}/build" />
+    <property name="logsDir"  value="${buildDir}/logs" />
+    
+    
+    <target name="clean">
+        <delete dir="${buildDir}"/>
+        <delete>
+            <fileset dir="${basedir}/data/cache" excludes=".empty"/>
+            <fileset dir="${basedir}/data/logs" excludes=".empty"/>
+            <fileset dir="${basedir}/data/session" excludes=".empty"/>
+        </delete>
+    </target>
+    <target name="prepare" depends="clean">
+        <mkdir dir="${buildDir}"/>
+        
+        <mkdir dir="${logsDir}" />
+        
+        <mkdir dir="${buildDir}/logs"/>
+        <mkdir dir="${buildDir}/logs/clover"/>
+        <mkdir dir="${buildDir}/docs"/>
+        <mkdir dir="${buildDir}/coverage"/>
+        <mkdir dir="${buildDir}/phpcb"/>
+        <mkdir dir="${buildDir}/pdepend"/>
+
+        <!--Requirements-->
+        <chmod dir="${basedir}/data/cache" perm="777"/>
+        <chmod dir="${basedir}/data/logs" perm="777"/>
+        <chmod dir="${basedir}/data/session" perm="777"/>
+        <chmod dir="${basedir}/data/uploads" perm="777"/>
+        <chmod dir="${basedir}/public/captcha" perm="777"/>
+        <chmod dir="${basedir}/public/uploads" perm="777"/>
+        
+        <!--Configuration-->
+        <copy file="${appDir}/configs/application.yaml.dist" tofile="${appDir}/configs/application.yaml" />
+    </target>
+    <!--<target name="phpdoc">
+        <exec dir="${basedir}" executable="phpdoc" failonerror="false">
+            <arg line="-t build/docs
+                  - -directory '${basedir}/application,${basedir}/library/Core'
+                  -ti 'ZFCore Docs'
+                  - -parseprivate on
+                  - -undocumentedelements on
+                  - -output HTML:Smarty:PHP
+                  - -ignore '*.phtml'
+                  - -sourcecode on"/>
+        </exec>
+    </target>-->
+    <target name="phploc" depends="prepare">
+        <exec dir="${basedir}" executable="phploc" output="${logsDir}/phploc.log">
+            <arg line="--count-tests" />
+            <arg line="--log-csv ${logsDir}/phploc.csv" />
+            <arg line="." />
+        </exec>
+    </target>
+    <target name="phpcpd" depends="prepare">
+        <exec dir="${basedir}" executable="phpcpd" failonerror="false" output="${logsDir}/phpcpd.log">
+            <arg line="--log-pmd ${logsDir}/phpcpd.xml" />
+            <arg line="${appDir}" />
+            <arg line="${coreDir}" />
+        </exec>
+    </target>
+    <target name="phpmd" depends="prepare">
+        <exec dir="${basedir}" executable="phpmd" failonerror="false" output="${logsDir}/phpmd.log">
+            <arg line="${basedir}" />
+            <arg line="xml" />
+            <arg line="naming,unusedcode,codesize" />
+            <arg line="--reportfile ${logsDir}/pmd.xml" />
+            <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests" />
+        </exec>
+    </target>
+
+
+    <target name="pdepend" depends="prepare" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec dir="${basedir}" executable="pdepend" failonerror="false" output="${logsDir}/pdepend.log">
+            <arg line="--jdepend-xml=${logsDir}/jdepend.xml" />
+            <arg line="--jdepend-chart=${buildDir}/pdepend/dependencies.svg" />
+            <arg line="--overview-pyramid=${buildDir}/pdepend/overview-pyramid.svg" />
+            <arg line="--exclude=bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests"/>
+            <arg line="${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcs" depends="prepare">
+        <exec dir="${basedir}" executable="phpcs" failonerror="false" output="${logsDir}/phpcs.log">
+            <arg line="--report=checkstyle"/>
+            <arg line="--extensions=php"/>
+            <arg line="--standard=Zend"/>
+            <arg line="--report-file=${logsDir}/checkstyle.xml" />
+            <arg line="${appDir}"/>
+            <arg line="${coreDir}"/>
+            <arg line="${testsDir}"/>
+        </exec>
+    </target>
+    <target name="phpunit" depends="prepare">
+        <exec dir="${basedir}/tests" executable="phpunit" output="${logsDir}/phpunit.log">
+            <arg line="--verbose"/>
+            <arg line="--log-junit '${logsDir}/junit.xml'"/>
+            <arg line="--coverage-clover '${logsDir}/clover.xml'"/>
+            <arg line="--coverage-html '${logsDir}/clover'"/>
+            <arg line="TestSuite.php"/>
+        </exec>
+    </target>
+    <target name="phpcb" depends="phpcpd, phpmd, phpcs">
+        <exec executable="phpcb" output="${logsDir}/phpcb.log">
+            <arg line="--log ${logsDir}" />
+            <arg line="--output ${buildDir}/phpcb" />
+        </exec>
+    </target>
+    
+    <target name="build" depends="prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpunit, phpcb"/>
+
+    <target name="update-source" depends="prepare">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
+            <arg line="pull" />
+        </exec>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
+            <arg line="update" />
+        </exec>
+    </target>
+
+    <target name="clean-db">
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration blog" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration faq" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration feedback" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration forum" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration menu" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration pages" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration users" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration" />
+        </exec>
+    </target>
+
+    <target name="recreate-db" depends="clean-db">
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration blog" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration faq" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration feedback" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration forum" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration menu" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration pages" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration users" />
+        </exec>
+    </target>
+
+    <target name="load-test-data" depends="recreate-db">
+        <!-- Add here any test data (may be provided with custom migrations) -->
+    </target>
+
+    <target name="show-maintanance-page">
+        
+        <copy file="${basedir}/public/robots.txt"
+              tofile="${basedir}/public/original-robots.txt"
+              overwrite="true" failonerror="false" />
+
+        <copy file="${basedir}/public/maintenance-robots.txt"
+              tofile="${basedir}/public/robots.txt"
+              overwrite="true" />
+
+        <copy file="${basedir}/public/.htaccess"
+              tofile="${basedir}/public/original.htaccess" 
+              overwrite="true" />
+
+        <copy file="${basedir}/public/maintenance.htaccess"
+              tofile="${basedir}/public/.htaccess" 
+              overwrite="true" />
+
+    </target>
+
+    <target name="remove-maintanance-page">
+
+        <copy file="${basedir}/public/original.htaccess" 
+              tofile="${basedir}/public/.htaccess"
+              overwrite="true" />
+
+        <copy file="${basedir}/public/original-robots.txt" 
+              tofile="${basedir}/public/robots.txt"
+              overwrite="true" failonerror="false" />
+              
+    </target>
+
+    <target name="reset-demo" depends="show-maintanance-page,update-source,load-test-data,remove-maintanance-page"/>
+    
+    <target name="nightly" depends="update-nightly, build, save-nightly"/>
+    
+    <target name="update-nightly">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="up -C nightly" />
+        </exec>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="merge default" />
+        </exec>
+    </target>
+    
+    <target name="save-nightly">
+        <tstamp/>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="commit -m '${DSTAMP}'" />
+        </exec>
+    </target>
+
+</project>

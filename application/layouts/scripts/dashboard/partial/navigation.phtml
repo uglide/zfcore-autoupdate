@@ -1,0 +1,21 @@
+<div class="nix"></div>
+
+<div class="well" style="padding: 8px 0;margin-top: 16px;">
+<?php
+echo $this->navigation($this->menuContainer('Home'))
+        ->menu()
+        ->setPartial('/dashboard/partial/dashboardMenu.phtml');
+?>
+</div>
+
+<script>
+    $(function(){
+        $('.nav-list li.nav-header').click(function(){
+            $(this).nextUntil('li.nav-header').toggleClass('hide');
+        });
+    });
+</script>
+
+<div class="textcenter" style="color:white">
+    &copy; <a href="http://www.nixsolutions.com" title="NIX Solutions Ltd.">NIX Solutions Ltd.</a>
+</div>

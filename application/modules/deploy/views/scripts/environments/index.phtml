@@ -1,0 +1,17 @@
+
+<div class="span3">
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="nav-header">Available environments:</li>
+        <?php
+        foreach ($this->environments as $env) {
+            echo '<li><a href="'.
+                $this->url(array('action'=> 'view', 'id' => $env->id)) .'">' .
+                $env->name . '</a></li>';
+        }
+        ?>
+    </ul>
+</div>
+<div class="span8">
+    <!--Body content-->
+    <?php echo file_get_contents(APPLICATION_PATH . '/../data/help.html'); ?>
+</div>

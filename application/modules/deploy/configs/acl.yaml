@@ -1,0 +1,16 @@
+mvc:
+  deploy:
+    error:
+      allow:
+       - developer
+       - verifier
+    environments:
+      verify:
+        allow:
+          - admin
+          - verifier
+      allow: user
+    update:
+      allow: user
+
+

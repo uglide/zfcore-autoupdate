@@ -1,0 +1,33 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>.
+ * stats-tab.phtml
+ * Date: 27.11.12
+ */
+?>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load('visualization', '1', {packages: ['corechart']});
+</script>
+<script type="text/javascript">
+
+    var stats = <?=$this->stats?>;
+
+    function drawStats() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable(stats);
+
+        var ac = new google.visualization.AreaChart(document.getElementById('stats'));
+        ac.draw(data, {
+            title : 'Last 2 weeks',
+            isStacked: false,
+            width: 900,
+            height: 400,
+            legend: 'none',
+            'chartArea': {'left': 50, 'top': 50, 'right': 0, 'bottom': 0, width:"90%",height:"75%"}
+        });
+    }
+    google.setOnLoadCallback(drawStats);
+</script>
+
+<div id="stats" style="text-align: left;"></div>

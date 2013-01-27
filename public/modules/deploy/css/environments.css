@@ -1,0 +1,57 @@
+.tab-content {
+    min-height: 500px;
+}
+
+#environment span {
+    color: #da4f49
+}
+
+.alert {
+    font-size: 25px;
+    margin: 5px 0 15px;
+    padding: 15px 20px;
+}
+
+
+div.alert span.version {
+    display: block;
+    font-size: 12px;
+}
+
+a.verify {
+    float: right;
+    margin-top: -40px;
+}
+
+div#busy-overlay {
+    background-color: rgba(255, 255, 255, 0.85);
+    color: rgba(14, 126, 8, 0.95);
+    font-size: 25px;
+    height: 300px;
+    padding-top: 210px;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    width: 940px;
+}
+
+select#tags {
+    color: green;
+    font-weight: bolder;
+    width: 95px;
+}
+.message {
+    background: url("/css/images/preloader.png") no-repeat scroll left top transparent;
+    padding-left: 35px;
+}
+
+.message-locked {
+    display: none;
+}
+.message.message-locked {
+    color: #DA4F49;
+}
+
+span.label {
+    white-space: normal!important;
+}

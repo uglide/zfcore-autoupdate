@@ -1,0 +1,30 @@
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$class = array();
+$class[] = 'm-' . $request->getModuleName();
+$class[] = 'c-' . $request->getControllerName();
+$class[] = 'a-' . $request->getActionName();
+
+?>
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+    <?php echo $this->render('dashboard/partial/head.phtml') ?>
+    <body class="<?php echo implode(' ', $class) ?>" data-spy="scroll" data-target=".subnav" data-offset="50">
+    <?php echo $this->render('dashboard/partial/messages.phtml') ?>
+    <?php echo $this->render('dashboard/partial/menu.phtml') ?>
+    <?php if ($this->navigation()->breadcrumbs()->render()): ?>
+        <div class="breadcrumbs shadow"><?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?></div>
+    <?php endif; ?>
+    <div class="container-fluid">
+        <div class="filler sidebar"></div>
+        <div class="filler content"></div>
+        <div class="sidebar">
+            <?php echo $this->render('dashboard/partial/navigation.phtml') ?>
+        </div>
+        <div class="content">
+            <?php echo $this->layout()->content ?>
+        </div>
+    </div>
+    </body>
+</html>

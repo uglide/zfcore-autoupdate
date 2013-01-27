@@ -1,0 +1,6 @@
+mvc:
+  cron:
+    index:
+        allow:
+          - system
+          - admin

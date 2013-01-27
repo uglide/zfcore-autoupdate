@@ -1,0 +1,30 @@
+<?php
+/**
+ * Created by Igor Malinovskiy <u.glide@gmail.com>
+ * Date: 27.10.12
+ * Time: 16:35
+ */
+
+    $this->stylesheet()->controller();
+
+?>
+
+    <h1 id="environment" data-id="<?php echo $this->env->id?>">Environment - <span><?=$this->env->name?></span></h1>
+    <div class="tabbable"> <!-- Only required for left/right tabs -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-details" data-toggle="tab">Details</a></li>
+            <li><a href="#tab-history" data-toggle="tab">History</a></li>
+            <li><a href="#tab-stats" data-toggle="tab">Stats</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-details">
+                <?php echo $this->partial('partial/details-tab.phtml', array('env' => $this->env, 'states' => $this->errors));?>
+            </div>
+            <div class="tab-pane" id="tab-history">
+                <?php echo $this->partial('partial/history-tab.phtml', array('history' => $this->history));?>
+            </div>
+            <div class="tab-pane" id="tab-stats">
+                <?php echo $this->partial('partial/stats-tab.phtml', array('stats' => $this->stats));?>
+            </div>
+        </div>
+    </div>

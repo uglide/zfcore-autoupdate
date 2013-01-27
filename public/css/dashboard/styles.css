@@ -1,0 +1,189 @@
+/**
+ * Based CSS
+ *
+ * Included 
+ *
+ * @author   Anton Shevchuk
+ * @created  06.07.11 16:20
+ */
+
+html,body,
+div,pre,code,
+dl,dt,dd,ul,ol,li,
+h1,h2,h3,h4,h5,h6,
+form,fieldset,legend,input,button,textarea,
+p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+caption,th{text-align:left;}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select{*font-size:100%;}
+
+body {
+    font: 62.5%/1.5em Helvetica, Arial, sans-serif;
+	background: url('bg-body.jpg') repeat-y 0 0;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+	clear:both;
+    background:#777;
+	margin-bottom: 1em;
+}
+h1,h2,h3,h4,h5,h6 {clear:both}
+
+pre {
+    margin: 8px;
+    padding: 8px;
+    font-size:1.2em;
+    line-height:1.4em;
+    white-space: pre-wrap; /* css-3 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    background: #f5f5f5;
+	-moz-box-shadow:inset 0 0 10px #D4D4D4;
+	-webkit-box-shadow:inset 0 0 10px #D4D4D4;
+	box-shadow:inset 0 0 10px #D4D4D4;
+}
+
+blockquote{ padding-left:6px }
+del { text-decoration: line-through; }
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+caption {
+	color:#bb1111;
+	font-weight: 700;
+	text-align: center;
+	padding: 4px 8px;
+}
+
+a {
+    outline:none;
+    text-decoration:none;
+}
+a img {
+	border: none;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.left { float:left }
+.right { float:right }
+.clear { clear:both }
+.empty { height:0 }
+
+.textleft { text-align:left }
+.textright { text-align:right }
+.textcenter { text-align:center }
+
+article, aside, header, footer, section {
+    display:block;
+}
+
+/*Main*/
+html {
+    min-height: 100%;
+}
+body {
+    color:#0F0F0F;
+    height: 100%;
+    min-height: 100%;
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	padding-bottom: 20px;
+}
+/*/Main*/
+/*Messages*/
+#messages {
+    padding:0;
+    z-index:999;
+    font-weight:700;
+    font-size:1.6em;
+    position:fixed;
+    top:40px;
+    left:0;
+    width:100%;
+    border-top:1px solid #aaa;
+    border-bottom:1px solid #aaa;
+    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpi+P9/yxmAAAMACTIDf5NbzpMAAAAASUVORK5CYII=);
+    background:rgba(255, 255, 180, 0.9);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#95fffcc0, endColorstr=#95fffcc0);
+}
+    #messages p {
+        width:1024px;
+        margin:10px auto;
+        font-size: 14px;
+        line-height: 16px;
+    }
+    #messages p.error {
+        color: #b94a48;
+    }
+    #messages p.info {
+        color: #3a87ad;
+    }
+    #messages p.success {
+        color: #468847;
+    }
+/*/Messages*/
+/*Loading*/
+#loading {
+	width: 180px;
+	height: 40px;
+	float:right;
+	background: url("../../img/loading.gif") 50% 50% no-repeat;
+	display: none;
+}
+/*/Loading*/
+/*Forms*/
+ul.help-inline {
+	list-style: none;
+}
+/*/Forms*/
+/*Grid*/
+.grid-controls {
+	overflow: hidden;
+}
+#grid .alert{
+	margin-top: 8px;
+}
+/*/Grid /
+/*NIX*/
+.nix {
+	background: url('nix-logo.png') no-repeat 0 0;
+	width: 200px;
+	height: 90px;
+	text-indent: -9999%;
+	margin: 40px auto 0;
+}
+/*/NIX*/
+/*fluid markup with fixed sidebar*/
+.filler{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    padding-right: 20px;
+}
+.filler.content {
+    z-index: -1;
+}
+.container-fluid { min-height: 100%;}
+.container-fluid > .sidebar {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	width: 232px;
+}
+.container-fluid > .content {
+	margin-left: 260px;
+}
+/*Menu*/
+.nav-list li.nav-header {
+	cursor: pointer;
+}
+/*/Menu*/
