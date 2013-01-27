@@ -1,5 +1,5 @@
 # ZFCore Auto Update #
-Appication for Continious Delivery
+Continious Delivery module for ZFCore Transition
 
 ## Wish List: ##
 
